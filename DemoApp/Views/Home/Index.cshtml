@@ -1,0 +1,106 @@
+﻿@model IEnumerable<DemoApp.Models.Medicine>
+
+<head>
+    <title>Test</title>
+</head>
+
+<body>
+    @{ var rowStyle = string.Empty;}
+    <h2>Medicine Details</h2>
+
+    <label id="filter" title="Search Medinine Name: "></label>
+    <input id="txtSearch" type="text" />
+    <input type="button" id="btnSearch" value="Search" onclick="CallWebApi()" />
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+
+    <style type="text/css">
+        .Expired {
+            background-color: red;
+        }
+
+        .AboutToExpire {
+            background-color: yellow;
+        }
+    </style>
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.MedicineName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExpiryDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            if (item.ExpiryDate < DateTime.Today && item.ExpiryDate > DateTime.Today.AddDays(-10))
+            {
+                rowStyle = "AboutToExpire";
+            }
+            else if (item.ExpiryDate < DateTime.Today)
+            {
+                rowStyle = "Expired";
+            }
+            else
+            {
+                rowStyle = string.Empty;
+            }
+
+            <tr class=@rowStyle>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MedicineName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ExpiryDate, "{0:MM/dd/yyyy}")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.ActionLink("Envoice", "Envoice", new { id = item.MedicineName }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.MedicineName })
+                </td>
+            </tr>
+        }
+        @Html.ActionLink("Add Medicine", "Add")
+    </table>
+    <script type="text/javascript">
+
+        function CallWebApi() {
+
+            var textSearch = $('#txtSearch').val();
+            var item = { "MedicineName": textSearch };
+            $.ajax({
+                type: "POST",
+                url: "/api/Values/",
+                data: JSON.stringify(item),
+                contentType: "application/json",
+                success: function (data) {
+                    $.ajax({
+
+                        type: "POST",
+                        url: "/Home/Filter/",
+                        data: { filteredList: data },
+                        success: function (data) {
+
+                            window.location.href = "@Url.Action("Index","Home")";
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+</body>

@@ -1,0 +1,52 @@
+﻿@model DemoApp.Models.Medicine
+
+@{
+    ViewBag.Title = "Add";
+}
+
+<h2>Add Medicine</h2>
+
+
+@using (Html.BeginForm(controllerName:"Home", actionName:"Add"))
+{
+
+    <div>
+        <hr />
+
+        @Html.LabelFor(model => model.MedicineName)
+        <div>
+            @Html.TextBoxFor(model => model.MedicineName)
+        </div>
+    </div>
+        <div>
+
+            @Html.LabelFor(model => model.Price)
+            <div>
+                @Html.TextBoxFor(model => model.Price)
+            </div>
+        </div>
+            <div>
+                @Html.LabelFor(model => model.ExpiryDate)     * Enter Expiry Date in format of MM/dd/yyyy               
+                <div>
+                    @Html.TextBoxFor(model => model.ExpiryDate, "{0:MM/dd/yyyy}")
+                </div>
+            </div>
+                <div>
+                    @Html.LabelFor(model => model.Status)
+                    <div>
+                        @Html.TextBoxFor(model => model.Status)
+                    </div>
+                </div>
+
+                    <div>
+                        <input type="submit" value="Add" >
+                    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

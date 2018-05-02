@@ -1,0 +1,38 @@
+﻿@model DemoApp.Models.Medicine
+
+@{
+    ViewBag.Title = "Envoice";
+}
+
+<h2>Envoice</h2>
+
+<div>
+    <hr />
+
+    @Html.LabelFor(model => model.MedicineName)
+    <div>
+        @Html.DisplayFor(model => model.MedicineName)
+    </div>
+    <br />
+    @Html.LabelFor(model => model.Price)
+    <div>
+        @Html.DisplayFor(model => model.Price)
+    </div>
+    <br />
+
+    @Html.LabelFor(model => model.ExpiryDate)
+    <div>
+        @Html.DisplayFor(model => model.ExpiryDate)
+    </div>
+    <br />
+    @Html.LabelFor(model => model.Status)
+    <div>
+        @Html.DisplayFor(model => model.Status)
+    </div>
+    <br /><br />
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+   
+</div>
+
